@@ -26,7 +26,4 @@ virtualenv-clone==0.5.7
 whitenoise==6.4.0
 
 
-kivy-deps.gstreamer==0.3.3
-kivy-deps.sdl2==0.4.5
-Kivy-examples==2.1.0
-Kivy-Garden==0.1.5
+
