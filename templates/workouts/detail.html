@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
+    <title>{{ workout.title }}</title>
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+</head>
+<body>
+    <div class="max-w-lg mx-auto py-8 px-4">
+        <h1 class="text-xl font-bold mb-4"><a href="{% url 'workout-list' %}">Treinos</a> / {{ workout.title }}</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-3 rounded bg-gray-100">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="border rounded-lg p-4 mb-6">
+            <p class="text-sm text-gray-500">{{ workout.get_workout_type_display }} · {{ workout.location }}</p>
+            <p class="text-sm text-gray-500">{{ workout.scheduled_for }}</p>
+            <p class="mt-2">{{ workout.description }}</p>
+            <p class="text-sm text-gray-500 mt-2">
+                Criado por <a href="{% url 'profile' workout.creator.username %}">@{{ workout.creator.username }}</a>
+            </p>
+            <p class="text-sm text-gray-500">
+                {{ workout.confirmed_count }} confirmado(s){% if workout.max_participants %} de {{ workout.max_participants }}{% endif %}
+            </p>
+
+            <a href="{% url 'workout-join' workout.pk %}"
+               class="inline-block mt-3 px-4 py-2 rounded-full text-sm {% if is_participant %}bg-gray-200{% else %}bg-pink-500 text-white{% endif %}">
+                {% if is_participant %}Cancelar presença{% else %}Marcar presença{% endif %}
+            </a>
+        </div>
+
+        <h2 class="font-semibold mb-2">Quem vai:</h2>
+        <ul class="space-y-1">
+            {% for participant in participants %}
+                <li><a href="{% url 'profile' participant.user.username %}">@{{ participant.user.username }}</a></li>
+            {% empty %}
+                <li class="text-gray-500">Ninguém confirmou ainda.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

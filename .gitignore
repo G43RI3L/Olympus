@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Ambiente virtual
+venv/
+env/
+.venv/
+
+# Variáveis de ambiente / segredos
+.env
+
+# Banco de dados local (SQLite é só para desenvolvimento)
+db.sqlite3
+db.sqlite3-journal
+
+# Arquivos estáticos coletados (gerados por collectstatic)
+staticfiles/
+
+# Uploads de usuários (não devem ir pro repositório de código)
+media/profile_images/*
+media/post_images/*
+!media/profile_images/.gitkeep
+!media/post_images/.gitkeep
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store

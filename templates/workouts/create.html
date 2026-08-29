@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
+    <title>Novo treino</title>
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+</head>
+<body>
+    <div class="max-w-lg mx-auto py-8 px-4">
+        <h1 class="text-2xl font-bold mb-6"><a href="{% url 'workout-list' %}">Treinos</a> / Novo</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-3 rounded bg-red-100 text-red-700">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'workout-create' %}" method="POST" class="space-y-4">
+            {% csrf_token %}
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Título</label>
+                <input type="text" name="title" required class="w-full border rounded px-3 py-2" placeholder="Ex: Corrida no parque">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Tipo</label>
+                <select name="workout_type" class="w-full border rounded px-3 py-2">
+                    {% for value, label in workout_types %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Local</label>
+                <input type="text" name="location" required class="w-full border rounded px-3 py-2" placeholder="Ex: Parque da Cidade">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Data e hora</label>
+                <input type="datetime-local" name="scheduled_for" required class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Vagas (opcional)</label>
+                <input type="number" name="max_participants" min="1" class="w-full border rounded px-3 py-2" placeholder="Deixe em branco para ilimitado">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Descrição</label>
+                <textarea name="description" rows="3" class="w-full border rounded px-3 py-2"></textarea>
+            </div>
+
+            <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Criar treino</button>
+        </form>
+    </div>
+</body>
+</html>

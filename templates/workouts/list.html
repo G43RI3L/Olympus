@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
+    <title>Treinos</title>
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+</head>
+<body>
+    <div class="max-w-2xl mx-auto py-8 px-4">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold"><a href="{% url 'index' %}">Home</a> / Treinos</h1>
+            <a href="{% url 'workout-create' %}" class="bg-pink-500 text-white px-4 py-2 rounded-md">+ Novo treino</a>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-3 rounded bg-gray-100">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if workouts %}
+            <div class="space-y-4">
+                {% for workout in workouts %}
+                <div class="border rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-lg font-semibold">
+                                <a href="{% url 'workout-detail' workout.pk %}">{{ workout.title }}</a>
+                            </h2>
+                            <p class="text-sm text-gray-500">{{ workout.get_workout_type_display }} · {{ workout.location }}</p>
+                            <p class="text-sm text-gray-500">{{ workout.scheduled_for }}</p>
+                            <p class="text-sm text-gray-500">
+                                {{ workout.confirmed_count }} confirmado(s){% if workout.max_participants %} de {{ workout.max_participants }}{% endif %}
+                            </p>
+                        </div>
+                        <a href="{% url 'workout-join' workout.pk %}"
+                           class="px-3 py-1 rounded-full text-sm {% if workout.pk in my_participations %}bg-gray-200{% else %}bg-pink-500 text-white{% endif %}">
+                            {% if workout.pk in my_participations %}Cancelar presença{% else %}Marcar presença{% endif %}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500">Nenhum treino agendado ainda. Que tal criar o primeiro?</p>
+        {% endif %}
+    </div>
+</body>
+</html>
